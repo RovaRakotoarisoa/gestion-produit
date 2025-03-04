@@ -29,7 +29,7 @@
                     <td class="p-3">{{ $sale->reference }}</td>
                     <td class="p-3">{{ $sale->client->name }}</td>
                     <td class="p-3">{{ implode(', ', $sale->products->pluck('name')->toArray()) }}</td>
-                    <td class="p-3">{{ $sale->quantity }}</td>
+                    <td class="p-3">{{ $sale->items->sum('quantity') }}</td>
                     <td class="p-3">{{ number_format($sale->total, 2) }} €</td>
                     <td class="p-3">
                         <a href="{{ route('sales.show', $sale->id) }}" class="text-blue-500 hover:text-blue-700 mr-2">Voir</a>

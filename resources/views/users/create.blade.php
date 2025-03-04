@@ -14,10 +14,6 @@
             <input type="email" name="email" id="email" class="border rounded px-4 py-2 w-full" required>
         </div>
         <div class="mb-4">
-            <label for="username" class="block text-gray-700">Nom d'utilisateur</label>
-            <input type="text" name="username" id="username" class="border rounded px-4 py-2 w-full" required>
-        </div>
-        <div class="mb-4">
             <label for="password" class="block text-gray-700">Mot de passe</label>
             <input type="password" name="password" id="password" class="border rounded px-4 py-2 w-full" required>
         </div>

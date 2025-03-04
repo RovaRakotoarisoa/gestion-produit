@@ -17,6 +17,7 @@ class SaleController extends Controller
     public function index()
     {
        $sales = Sale::with(['client', 'items.product'])->latest()->get();
+       // dd($sales->toArray());
     return view('sales.index', compact('sales'));
     }
 

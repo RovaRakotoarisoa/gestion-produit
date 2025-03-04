@@ -20,9 +20,10 @@
                     <td class="border px-4 py-2">{{ $user->name }}</td>
                     <td class="border px-4 py-2">{{ $user->email }}</td>
                     <td class="border px-4 py-2">
-                        @if ($user->avatar)
-                            <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt="Avatar" class="w-10 h-10 rounded-full">
+                        @if ($user->profile_photo_path)
+                            <img src="{{ asset('storage/avatars/' . $user->profile_photo_path) }}" alt="Avatar" class="w-10 h-10 rounded-full" >
                         @else
+
                             Pas d'avatar
                         @endif
                     </td>

@@ -25,7 +25,7 @@
 
             <div>
                 <strong class="block text-sm font-medium text-gray-700">Quantité :</strong>
-                <p class="mt-1 p-3 bg-gray-50 rounded-lg">{{ $sale->quantity }}</p>
+                <p class="mt-1 p-3 bg-gray-50 rounded-lg">{{ $sale->items->sum('quantity') }}</p>
             </div>
 
             <div>

@@ -43,6 +43,7 @@ class UserController extends Controller
             'profile_photo_path' => $profilePhotoPath,
         ]);
 
+
         return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
