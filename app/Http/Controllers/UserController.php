@@ -3,130 +3,94 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
+    // Afficher la liste des utilisateurs
     public function index()
     {
         $users = User::all();
         return view('users.index', compact('users'));
     }
 
+    // Afficher le formulaire pour ajouter un utilisateur
     public function create()
     {
         return view('users.create');
     }
-    // ============ D'ORIGINE ==============
-    // public function store(UserRequest $request)
-    // {
-    //     $data = $request->validated();
-    //     $data['password'] = Hash::make($data['password']);
 
-    //     if ($request->hasFile('avatar')) {
-    //         $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
-    //     }
-
-    //     User::create($data);
-
-    //     return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès');
-    // }
+    // Stocker un nouvel utilisateur
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'username' => 'required|string|unique:users,username',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        
+
+        $profilePhotoPath = null;
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $validated['avatar'] = $avatarPath;
+            $profilePhotoPath = $request->file('avatar')->store('avatars', 'public');
         }
 
-        User::create($validated);
-        return redirect()->route('users.index');
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'profile_photo_path' => $profilePhotoPath,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
-
-
-    public function show(User $user)
+    // Afficher le formulaire d'édition d'un utilisateur
+    public function edit($id)
     {
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
+    }
+    public function show($id)
+    {
+        // Récupère l'utilisateur par son ID
+        $user = User::findOrFail($id);
+
+        // Retourne la vue avec les détails de l'utilisateur
         return view('users.show', compact('user'));
     }
 
-    public function edit(User $user)
+    // Mettre à jour les informations d'un utilisateur
+    public function update(Request $request, $id)
     {
-        return view('users.edit', compact('user'));
-    }
-
-    // ============ D'ORIGINE ==============
-    // public function update(UserRequest $request, User $user)
-    // {
-    //     $data = $request->validated();
-
-    //     if ($request->filled('password')) {
-    //         $data['password'] = Hash::make($data['password']);
-    //     } else {
-    //         unset($data['password']);
-    //     }
-
-    //     if ($request->hasFile('avatar')) {
-    //         // Supprimer l'ancien avatar s'il existe
-    //         if ($user->avatar) {
-    //             Storage::disk('public')->delete($user->avatar);
-    //         }
-    //         $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
-    //     }
-
-    //     $user->update($data);
-
-    //     return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès');
-    // }
-
-    public function update(Request $request, User $user)
-    {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'username' => 'required|string|unique:users,username,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
+            'email' => 'required|email|unique:users,email,' . $id,
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $user = User::findOrFail($id);
+
+        $profilePhotoPath = $user->profile_photo_path;
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $validated['avatar'] = $avatarPath;
+            $profilePhotoPath = $request->file('avatar')->store('avatars', 'public');
         }
 
-        $user->update($validated);
-        return redirect()->route('users.index');
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'profile_photo_path' => $profilePhotoPath,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès!');
     }
 
-
-    public function destroy(User $user)
+    // Supprimer un utilisateur
+    public function destroy($id)
     {
-        // Empêcher la suppression de son propre compte
-        if (auth()->id() === $user->id) {
-            return redirect()->route('users.index')->with('error', 'Vous ne pouvez pas supprimer votre propre compte');
-        }
-
-        // Supprimer l'avatar s'il existe
-        if ($user->avatar) {
-            Storage::disk('public')->delete($user->avatar);
-        }
-
-        $user->delete();
-
-        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès');
+        User::findOrFail($id)->delete();
+        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès!');
     }
 }
+

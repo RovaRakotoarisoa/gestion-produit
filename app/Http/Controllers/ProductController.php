@@ -29,7 +29,18 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create($request->validated());
+        // Valider les données de la requête
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'retail_price' => 'required|numeric|min:0',
+            'wholesale_price' => 'required|numeric|min:0',
+        ]);
+
+        // Créer le produit avec les données validées
+        Product::create($validatedData);
+
+        // Rediriger avec un message de succès
         return redirect()->route('products.index')->with('success', 'Produit créé avec succès');
     }
 
@@ -54,7 +65,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-         $product->update($request->validated());
+        // Valider les données de la requête
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'retail_price' => 'required|numeric|min:0',
+            'wholesale_price' => 'required|numeric|min:0',
+        ]);
+
+        // Mettre à jour le produit avec les données validées
+        $product->update($validatedData);
+
+        // Rediriger avec un message de succès
         return redirect()->route('products.index')->with('success', 'Produit mis à jour avec succès');
     }
 
@@ -67,3 +89,4 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Produit supprimé avec succès');
     }
 }
+

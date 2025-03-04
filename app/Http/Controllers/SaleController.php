@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Sale;
 use App\Models\Client;
 use App\Models\Product;
@@ -13,16 +12,16 @@ use Illuminate\Support\Str;
 class SaleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Afficher la liste des ventes.
      */
     public function index()
     {
-        $sales = Sale::with('client')->latest()->get();
-        return view('sales.index', compact('sales'));
+       $sales = Sale::with(['client', 'items.product'])->latest()->get();
+    return view('sales.index', compact('sales'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Afficher le formulaire de création d'une vente.
      */
     public function create()
     {
@@ -33,10 +32,19 @@ class SaleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Stocker une nouvelle vente.
      */
     public function store(Request $request)
     {
+        // Valider les données de la requête
+        $request->validate([
+            'reference' => 'required|string|max:255',
+            'client_id' => 'required|exists:clients,id',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+
         // Créer la vente
         $sale = Sale::create([
             'reference' => $request->reference,
@@ -44,13 +52,14 @@ class SaleController extends Controller
             'total' => 0, // Sera mis à jour après l'ajout des produits
         ]);
 
+        // Traiter les éléments de vente
         $this->processSaleItems($sale, $request->items);
 
         return redirect()->route('sales.index')->with('success', 'Vente créée avec succès');
     }
 
     /**
-     * Display the specified resource.
+     * Afficher les détails d'une vente.
      */
     public function show(Sale $sale)
     {
@@ -59,7 +68,7 @@ class SaleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Afficher le formulaire d'édition d'une vente.
      */
     public function edit(Sale $sale)
     {
@@ -70,10 +79,19 @@ class SaleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Mettre à jour une vente.
      */
     public function update(Request $request, Sale $sale)
     {
+        // Valider les données de la requête
+        $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        // Mettre à jour la vente
         $sale->update([
             'client_id' => $request->client_id,
         ]);
@@ -88,7 +106,7 @@ class SaleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprimer une vente.
      */
     public function destroy(Sale $sale)
     {
@@ -96,15 +114,18 @@ class SaleController extends Controller
         return redirect()->route('sales.index')->with('success', 'Vente supprimée avec succès');
     }
 
-
-    // Méthode pour récupérer les informations du produit via AJAX
+    /**
+     * Récupérer les informations d'un produit via AJAX.
+     */
     public function getProductInfo(Request $request)
     {
         $product = Product::findOrFail($request->product_id);
         return response()->json($product);
     }
 
-    // Méthode pour gérer les éléments de vente
+    /**
+     * Traiter les éléments de vente.
+     */
     private function processSaleItems($sale, $items)
     {
         $saleTotal = 0;
@@ -127,4 +148,5 @@ class SaleController extends Controller
         // Mettre à jour le total de la vente
         $sale->update(['total' => $saleTotal]);
     }
+    
 }

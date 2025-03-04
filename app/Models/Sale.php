@@ -24,5 +24,11 @@ class Sale extends Model
     {
         return $this->hasMany(SaleItem::class);
     }
+
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, SaleItem::class, 'sale_id', 'id', 'id', 'product_id');
+    }
+
 }
 
