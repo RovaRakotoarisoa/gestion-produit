@@ -30,7 +30,7 @@
 
             <div>
                 <strong class="block text-sm font-medium text-gray-700">Total :</strong>
-                <p class="mt-1 p-3 bg-gray-50 rounded-lg">{{ number_format($sale->total, 2) }} €</p>
+                <p class="mt-1 p-3 bg-gray-50 rounded-lg">{{ number_format($sale->total, 2) }} Ar</p>
             </div>
         </div>
 

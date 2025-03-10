@@ -37,7 +37,6 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        // Valider les données de la requête
         $request->validate([
             'reference' => 'required|string|max:255',
             'client_id' => 'required|exists:clients,id',
@@ -46,14 +45,12 @@ class SaleController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
         ]);
 
-        // Créer la vente
         $sale = Sale::create([
             'reference' => $request->reference,
             'client_id' => $request->client_id,
             'total' => 0, // Sera mis à jour après l'ajout des produits
         ]);
 
-        // Traiter les éléments de vente
         $this->processSaleItems($sale, $request->items);
 
         return redirect()->route('sales.index')->with('success', 'Vente créée avec succès');
@@ -92,15 +89,10 @@ class SaleController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
         ]);
 
-        // Mettre à jour la vente
-        $sale->update([
-            'client_id' => $request->client_id,
-        ]);
+        $sale->update(['client_id' => $request->client_id,]);
 
-        // Supprimer les anciens éléments de vente
         $sale->items()->delete();
 
-        // Ajouter les nouveaux éléments
         $this->processSaleItems($sale, $request->items);
 
         return redirect()->route('sales.index')->with('success', 'Vente mise à jour avec succès');
@@ -145,8 +137,6 @@ class SaleController extends Controller
 
             $saleTotal += $itemTotal;
         }
-
-        // Mettre à jour le total de la vente
         $sale->update(['total' => $saleTotal]);
     }
     

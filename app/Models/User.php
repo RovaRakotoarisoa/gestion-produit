@@ -23,7 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar',
+        'profile_photo_path',
     ];
 
     /**
@@ -65,8 +65,9 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getAvatarUrlAttribute()
+   public function getAvatarUrlAttribute()
     {
-        return $this->avatar ? asset('storage/' . $this->avatar) : asset('images/default-avatar.png');
+        return $this->profile_photo_path ? asset('storage/' . $this->profile_photo_path) : asset('images/default-avatar.png');
     }
+
 }

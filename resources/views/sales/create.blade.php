@@ -20,13 +20,11 @@
         <form action="{{ route('sales.store') }}" method="POST" id="sale-form">
             @csrf
 
-            <!-- Référence -->
             <div class="mb-4">
                 <label for="reference" class="block text-sm font-medium text-gray-700">Référence</label>
                 <input type="text" name="reference" id="reference" value="{{ $reference }}" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" readonly>
             </div>
 
-            <!-- Client -->
             <div class="mb-4">
                 <label for="client_id" class="block text-sm font-medium text-gray-700">Client</label>
                 <select name="client_id" id="client_id" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
@@ -36,24 +34,19 @@
                 </select>
             </div>
 
-            <!-- Produits -->
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Produits</label>
                 <div id="product-list">
-                    <!-- Les champs pour les produits seront ajoutés dynamiquement ici -->
                 </div>
                 <button type="button" id="add-product" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">
                     Ajouter un produit
                 </button>
             </div>
-
-            <!-- Total -->
             <div class="mb-4">
                 <label for="total" class="block text-sm font-medium text-gray-700">Total</label>
                 <input type="number" name="total" id="total-display" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" readonly>
             </div>
 
-            <!-- Bouton de soumission -->
             <div class="flex justify-end">
                 <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300">
                     Créer la vente

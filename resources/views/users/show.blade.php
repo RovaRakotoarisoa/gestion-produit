@@ -8,7 +8,7 @@
         <p><strong>Email :</strong> {{ $user->email }}</p>
         <p><strong>Avatar :</strong></p>
         @if ($user->avatar)
-            <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt="Avatar" class="w-20 h-20 rounded-full mt-2">
+            <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Avatar" class="w-10 h-10 rounded-full">
         @else
             <p>Pas d'avatar</p>
         @endif

@@ -22,7 +22,7 @@
             <label for="avatar" class="block text-gray-700">Avatar</label>
             <input type="file" name="avatar" id="avatar" class="border rounded px-4 py-2 w-full">
             @if ($user->avatar)
-                <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt="Avatar" class="w-20 h-20 rounded-full mt-2">
+                <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Avatar" class="w-10 h-10 rounded-full">
             @endif
         </div>
         <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Mettre à jour</button>
