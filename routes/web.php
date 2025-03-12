@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 // Route d'accueil principale
 Route::get('/', function () {
     return view('welcome'); // Assurez-vous que cette vue existe
-})->name('home');
+})->name('welcome');
 
 Route::get('/home', function () {
     return view('home');
