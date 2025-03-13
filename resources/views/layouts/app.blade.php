@@ -62,6 +62,18 @@
                     Ventes
                 </a>
             </li>
+            {{-- Pour la deconnexion--}}
+            <li>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="flex items-center p-3 w-full text-left rounded-lg hover:bg-red-600 transition duration-300">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6-10a9 9 0 11-6.219 15.219"></path>
+                        </svg>
+                        Déconnexion
+                    </button>
+                </form>
+            </li>
 
         </ul>
     </div>
