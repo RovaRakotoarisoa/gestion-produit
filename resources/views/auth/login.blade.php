@@ -1,12 +1,12 @@
 <x-guest-layout>
-    <x-auth-card>
+    <x-authentication-card>{{-- Avant c'etait <x-auth-card> mais il y avait des erreurs--}}
         <x-slot name="logo">
             <a href="/">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-32 h-auto">
             </a>
         </x-slot>
 
-        <h2 class="text-2xl font-bold text-center mb-8">Bienvenue Back!</h2>
+        <h2 class="text-2xl font-bold text-center mb-8">Welcome Back!</h2>
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -42,5 +42,5 @@
                 </x-button>
             </div>
         </form>
-    </x-auth-card>
+    </x-authentication-card> {{-- Avant c'etait </x-auth-card> mais il y avait des erreurs--}}
 </x-guest-layout>
