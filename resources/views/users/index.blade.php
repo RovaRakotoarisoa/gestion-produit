@@ -18,26 +18,26 @@
             </thead>
             <tbody>
                 @foreach ($users as $user)
-                <tr>
-                    <td class="border px-4 py-2">{{ $user->name }}</td>
-                    <td class="border px-4 py-2">{{ $user->email }}</td>
-                    <td class="border px-4 py-2">
-                        @if ($user->profile_photo_path)
-                            <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Avatar" class="w-10 h-10 rounded-full">
-                        @else
-                            Pas d'avatar
-                        @endif
-                    </td>
-                    <td class="border px-4 py-2">
-                        <a href="{{ route('users.show', $user->id) }}" class="text-blue-500">Voir</a>
-                        <a href="{{ route('users.edit', $user->id) }}" class="text-green-500 ml-2">Modifier</a>
-                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 ml-2">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
+                    <tr>
+                        <td class="border px-4 py-2">{{ $user->name }}</td>
+                        <td class="border px-4 py-2">{{ $user->email }}</td>
+                        <td class="border px-4 py-2">
+                            @if ($user->profile_photo_path)
+                                <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Avatar" class="w-10 h-10 rounded-full">
+                            @else
+                                Pas d'avatar
+                            @endif
+                        </td>
+                        <td class="border px-4 py-2">
+                            <a href="{{ route('users.show', $user->id) }}" class="text-blue-500">Voir</a>
+                            <a href="{{ route('users.edit', $user->id) }}" class="text-green-500 ml-2">Modifier</a>
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 ml-2">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
