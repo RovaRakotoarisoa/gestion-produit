@@ -7,9 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Auth;
 
-// Route d'accueil principale
 Route::get('/', function () {
-    return view('welcome'); // Assurez-vous que cette vue existe
+    return view('welcome'); 
 })->name('welcome');
 
 Route::get('/home', function () {
@@ -27,9 +26,9 @@ Route::middleware([
 });
 
 
-// Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('clients', ClientController::class);
     Route::resource('products', ProductController::class);
     Route::resource('sales', SaleController::class);
-// });
+});
