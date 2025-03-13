@@ -26,7 +26,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'profile_photo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_photo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $profilePhotoPath = null;
@@ -54,8 +54,6 @@ class UserController extends Controller
     {
 
         $user = User::findOrFail($id);
-
-        // Retourne la vue avec les détails de l'utilisateur
         return view('users.show', compact('user'));
     }
 
