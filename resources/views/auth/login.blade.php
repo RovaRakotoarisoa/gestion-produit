@@ -7,7 +7,6 @@
         </x-slot>
 
         <h2 class="text-2xl font-bold text-center mb-8">Welcome Back!</h2>
-
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
@@ -36,7 +35,10 @@
                 @endif
             </div>
 
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-4">
+                 <a href="{{ route('register') }}" class="w-full !border-gray-800 !bg-transparent hover:bg-blue-700 !text-gray-800 font-semibold py-2 px-4 rounded-md">
+                    {{ __('Register') }}
+                </a>
                 <x-button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">
                     {{ __('Se connecter') }}
                 </x-button>
