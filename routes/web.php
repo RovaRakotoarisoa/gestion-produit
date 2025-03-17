@@ -8,12 +8,16 @@ use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('welcome'); 
-})->name('welcome');
+    return view('auth.login'); 
+});
 
 Route::get('/home', function () {
     return view('home');
 });
+
+Route::get('/register', function () {
+    return view('auth.register'); 
+})->name('register');
 
 Route::middleware([
     'auth:sanctum',
